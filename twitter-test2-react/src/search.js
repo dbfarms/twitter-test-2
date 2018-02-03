@@ -12,7 +12,7 @@ export default class Search extends Component {
 
     addSearchTerm = (searchTerm) => {
         this.setState({
-            searches: [this.state.searches, ...searchTerm],
+            searches: [...this.state.searches, searchTerm],
         })
     }
 
@@ -20,7 +20,7 @@ export default class Search extends Component {
         return (
             <div>
             <h1>Twitters</h1>
-            <SearchForm onSubmit={this.addSearchTerm}/>
+            <SearchForm onSubmit={this.addSearchTerm.bind(this)}/>
             </div>
         );
     }

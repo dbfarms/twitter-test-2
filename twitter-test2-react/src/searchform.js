@@ -11,7 +11,6 @@ export default class SearchForm extends Component {
     }
        
     handleChange = (event) => {
-        //debugger 
         //const {searchTerm, value } = event.target 
         this.setState({
             searchTerm: event.target.value  
@@ -21,6 +20,9 @@ export default class SearchForm extends Component {
     handleOnSubmit = (event) => {
         event.preventDefault();
         this.props.onSubmit(this.state);
+        this.setState({
+            searchTerm: '',
+        });
     }
        
     render() {
@@ -31,6 +33,7 @@ export default class SearchForm extends Component {
                 <label htmlFor="searchTerm">Search Term</label>
                 <input type="text" 
                     name="searchTerm" 
+                    value={this.state.searchTerm}
                     onChange={(event) => this.handleChange(event)}/>
                 <br />
                 <input type="submit" />
