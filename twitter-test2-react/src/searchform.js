@@ -20,6 +20,7 @@ export default class SearchForm extends Component {
     handleOnSubmit = (event) => {
         event.preventDefault();
         this.props.onSubmit(this.state);
+        //debugger
         this.setState({
             searchTerm: '',
         });

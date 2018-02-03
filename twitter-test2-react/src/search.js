@@ -2,21 +2,20 @@ import React, { Component } from 'react';
 import SearchForm from './searchform'
 import Searches from './searches'
 import uuidV4 from 'uuid/v4';
+import { Route, Switch } from 'react-router-dom'
 
 export default class Search extends Component {
     constructor(props){
         super(props);
-        
         this.state = {
             searches: [],
+            editing: null,
         }
     }
     
     componentDidMount() {
         navigator.geolocation.getCurrentPosition(position => {
             const { latitude, longitude } = position.coords
-            
-            
         })
     }
 
@@ -26,15 +25,54 @@ export default class Search extends Component {
         })
     }
 
+    editSearchTerm = (id) => {
+        this.setState({
+            editing: id, 
+        })
+    }
+
     render() {
+        
+        const MySearchForm = (props) => {
+            return (
+                <SearchForm 
+                    onSubmit={this.addSearchTerm.bind(this)}
+                    {...props}
+                />
+            )
+        }
+    
+        const MySearches = (props) => {
+            //debugger 
+            return (
+                <Searches 
+                    searches={this.state.searches}
+                    {...props}
+                />
+            )
+        }
+        
+        //debugger 
         return (
             <div>
             <h1>Twitters</h1>
-            <div className="locations">
-            </div>
-            <SearchForm onSubmit={this.addSearchTerm.bind(this)}/>
-            <Searches searches={this.state.searches} />
-            </div>
+            <SearchForm onSubmit={this.addSearchTerm.bind(this)} />
+            <Searches 
+                searches={this.state.searches}
+                onEdit={this.editSearchTerm.bind(this)} />
+           </div>
         );
     }
 }
+
+/*
+            <Switch>
+                <Route 
+                    path="/searches/new" 
+                    render={MySearchForm} />
+                <Route 
+                    path="/searches"
+                    render={MySearches} />
+            </Switch>
+
+*/
