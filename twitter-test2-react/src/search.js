@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import SearchForm from './searchform'
+import Searches from './searches'
 
 export default class Search extends Component {
     constructor(props){
@@ -21,6 +22,7 @@ export default class Search extends Component {
             <div>
             <h1>Twitters</h1>
             <SearchForm onSubmit={this.addSearchTerm.bind(this)}/>
+            <Searches searches={this.state.searches} />
             </div>
         );
     }
