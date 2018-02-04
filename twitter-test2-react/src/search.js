@@ -8,6 +8,7 @@ export default class Search extends Component {
     constructor(props){
         super(props);
         this.state = {
+            //id: null,
             searches: [],
             editing: null,
         }
@@ -29,6 +30,14 @@ export default class Search extends Component {
         this.setState({
             editing: id, 
         })
+    }
+    
+    findSearchTerm = (id) => {
+        if (id === null) {
+            return {};
+        } else {
+            return this.state.searches.find((el) => el.id === id);
+        }
     }
 
     render() {
@@ -56,7 +65,11 @@ export default class Search extends Component {
         return (
             <div>
             <h1>Twitters</h1>
-            <SearchForm onSubmit={this.addSearchTerm.bind(this)} />
+            <SearchForm 
+                onSubmit={this.addSearchTerm.bind(this)} 
+                editing={this.state.editing}
+                search={this.findSearchTerm(this.state.editing)}
+            />
             <Searches 
                 searches={this.state.searches}
                 onEdit={this.editSearchTerm.bind(this)} />

@@ -5,8 +5,21 @@ export default class SearchForm extends Component {
     constructor(props) {
         super(props);
         
-        this.state = {
+        this.initialState = {
+            //id: null,
             searchTerm: "",
+        }
+        this.state = this.initialState
+    }
+  
+    componentWillReceiveProps(nextProps) {
+        //debugger 
+        const { id, searchTerm } = nextProps.search   
+        if(id && this.props.editing !== nextProps.editing) {
+            this.setState({
+              id: id,
+              searchTerm: searchTerm 
+            })
         }
     }
        
