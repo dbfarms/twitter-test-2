@@ -1,15 +1,17 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import uuidV4 from 'uuid/v4';
+
 import SearchForm from './searchform'
 import Searches from './searches'
-import uuidV4 from 'uuid/v4';
 import { Route, Switch } from 'react-router-dom'
 
-export default class Search extends Component {
+class Search extends Component {
     constructor(props){
         super(props);
         this.state = {
             //id: null,
-            searches: [],
+            //searches: [],
             editing: null,
         }
     }
@@ -20,12 +22,15 @@ export default class Search extends Component {
         })
     }
 
+    /*
     addSearchTerm = (searchTerm) => {
         this.setState({
             searches: [...this.state.searches, {id: uuidV4(), ...searchTerm}],
         })
     }
-
+    was passing this in before but not with redux 
+    */ 
+    
     editSearchTerm = (id) => {
         this.setState({
             editing: id, 
@@ -36,7 +41,7 @@ export default class Search extends Component {
         if (id === null) {
             return {};
         } else {
-            return this.state.searches.find((el) => el.id === id);
+            return this.props.searches.find((el) => el.id === id);
         }
     }
 
@@ -66,17 +71,24 @@ export default class Search extends Component {
             <div>
             <h1>Twitters</h1>
             <SearchForm 
-                onSubmit={this.addSearchTerm.bind(this)} 
+                //onSubmit={this.addSearchTerm.bind(this)}  // no longer needed with redux
                 editing={this.state.editing}
                 search={this.findSearchTerm(this.state.editing)}
             />
             <Searches 
-                searches={this.state.searches}
+                searches={this.props.searches}
                 onEdit={this.editSearchTerm.bind(this)} />
            </div>
         );
     }
 }
+
+const mapStateToProps = (state) => {
+    return { searches: state.searches }; 
+    // not sure about the above line ... state.what???? 
+}
+
+export default connect(mapStateToProps, null)(Search);
 
 /*
             <Switch>
