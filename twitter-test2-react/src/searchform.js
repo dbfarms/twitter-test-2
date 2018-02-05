@@ -1,7 +1,10 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux' ;
 
+import * as actions from './Actions/SearchActions'
 
-export default class SearchForm extends Component {
+class SearchForm extends Component {
     constructor(props) {
         super(props);
         
@@ -32,7 +35,7 @@ export default class SearchForm extends Component {
     
     handleOnSubmit = (event) => {
         event.preventDefault();
-        this.props.onSubmit(this.state);
+        this.props.actions.createSearch(this.state);
         //debugger
         this.setState({
             searchTerm: '',
@@ -56,3 +59,9 @@ export default class SearchForm extends Component {
         );
     }
 }
+
+const mapDispatchToProps = (dispatch) => {
+    return { actions: bindActionCreators(actions, dispatch)};
+}
+
+export default connect(null, mapDispatchToProps)(SearchForm);
