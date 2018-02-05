@@ -1,7 +1,10 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { bind } from 'redux';
 import uuidV4 from 'uuid/v4';
+import { bindActionCreators } from 'redux';
 
+import * as actions from './Actions/SearchActions';
 import SearchForm from './searchform'
 import Searches from './searches'
 import { Route, Switch } from 'react-router-dom'
@@ -29,19 +32,21 @@ class Search extends Component {
         })
     }
     was passing this in before but not with redux 
-    */ 
+    
     
     editSearchTerm = (id) => {
         this.setState({
             editing: id, 
         })
     }
+    */
     
     findSearchTerm = (id) => {
         if (id === null) {
             return {};
         } else {
-            return this.props.searches.find((el) => el.id === id);
+            //debugger
+            return this.props.searches.searches.find((el) => el.id === id);
         }
     }
 
@@ -66,29 +71,37 @@ class Search extends Component {
             )
         }
         
+        const { searches, editing, actions } = this.props; // we've moved from state to props with addition of redux
+        
         //debugger 
         return (
             <div>
             <h1>Twitters</h1>
             <SearchForm 
                 //onSubmit={this.addSearchTerm.bind(this)}  // no longer needed with redux
-                editing={this.state.editing}
-                search={this.findSearchTerm(this.state.editing)}
+                editing={editing}
+                search={this.findSearchTerm(editing)} //removed this.state because redux is props (see above)
             />
             <Searches 
-                searches={this.props.searches}
-                onEdit={this.editSearchTerm.bind(this)} />
+                searches={searches}
+                onEdit={actions.selectSearchToEdit} />
            </div>
         );
     }
 }
 
 const mapStateToProps = (state) => {
-    return { searches: state.searches }; 
-    // not sure about the above line ... state.what???? 
+    return { 
+        searches: state.searches, 
+        editing: state.searches.editing,
+    }; 
 }
 
-export default connect(mapStateToProps, null)(Search);
+const mapDispatchToProps = (dispatch) => {
+    return { actions: bindActionCreators(actions, dispatch)}
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Search);
 
 /*
             <Switch>
